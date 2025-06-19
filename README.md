@@ -70,7 +70,7 @@ GO
         Remark NVARCHAR(500)                        -- 备注
     );
 ```
-###创建租赁合同表（Leases）
+### 创建租赁合同表（Leases）
 ```sql
 IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Leases' AND xtype='U')
 BEGIN
