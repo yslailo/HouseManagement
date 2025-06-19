@@ -41,34 +41,51 @@
 
 ### 房屋表 (House)
 ```sql
-CREATE TABLE House (
-    HouseID INT PRIMARY KEY IDENTITY(1,1),
-    Address NVARCHAR(200) NOT NULL,
-    Type NVARCHAR(50),
-    Area FLOAT,
-    Price FLOAT,
-    Status NVARCHAR(20),
-    Description NVARCHAR(500)
-);
+    CREATE TABLE House (
+        HouseID INT PRIMARY KEY IDENTITY(1,1),      -- 房屋编号（自增主键）
+        Address NVARCHAR(200) NOT NULL,             -- 地址
+        Type NVARCHAR(50),                          -- 类型
+        Area FLOAT,                                 -- 面积
+        Price FLOAT,                                -- 价格
+        Status NVARCHAR(20),                        -- 状态
+        Description NVARCHAR(500)                   -- 备注
+    );
+END
+GO
 ```
 
 ### 客户表 (Customers)
 ```sql
-CREATE TABLE Customers (
-    CustomerID NVARCHAR(50) PRIMARY KEY,
-    Name NVARCHAR(100) NOT NULL,
-    IDCard NVARCHAR(20),
-    Phone NVARCHAR(20),
-    Email NVARCHAR(100),
-    Address NVARCHAR(200),
-    Occupation NVARCHAR(50),
-    Income NVARCHAR(50),
-    Preference NVARCHAR(200),
-    Status NVARCHAR(20),
-    Remark NVARCHAR(500)
-);
+    CREATE TABLE Customers (
+        CustomerID NVARCHAR(50) PRIMARY KEY,        -- 客户编号
+        Name NVARCHAR(100) NOT NULL,                -- 姓名
+        IDCard NVARCHAR(20),                        -- 身份证号
+        Phone NVARCHAR(20),                         -- 电话
+        Email NVARCHAR(100),                        -- 邮箱
+        Address NVARCHAR(200),                      -- 联系地址
+        Occupation NVARCHAR(50),                    -- 职业
+        Income NVARCHAR(50),                        -- 收入水平
+        Preference NVARCHAR(200),                   -- 购房偏好
+        Status NVARCHAR(20),                        -- 客户状态
+        Remark NVARCHAR(500)                        -- 备注
+    );
 ```
-
+###创建租赁合同表（Leases）
+```sql
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Leases' AND xtype='U')
+BEGIN
+    CREATE TABLE Leases (
+        LeaseID INT PRIMARY KEY IDENTITY(1,1),      -- 合同编号
+        HouseID INT NOT NULL,                       -- 房屋编号
+        CustomerID NVARCHAR(50) NOT NULL,           -- 客户编号
+        StartDate DATE NOT NULL,                    -- 起租日期
+        EndDate DATE,                               -- 退租日期
+        Rent FLOAT NOT NULL,                        -- 租金
+        Deposit FLOAT,                              -- 押金
+        Status NVARCHAR(20),                        -- 状态
+        Remark NVARCHAR(500)                        -- 备注
+    );
+```
 ## 核心类设计
 
 ### 数据库操作类
